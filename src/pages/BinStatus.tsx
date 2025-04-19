@@ -2,18 +2,12 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Battery, Wifi, ScrollText } from "lucide-react";
+import { ScrollText } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 const BinStatus = () => {
   const bins = [
-    {
-      type: "Plastic",
-      fillLevel: 75,
-      icon: "🗑️",
-      color: "green"
-    },
     {
       type: "Metal",
       fillLevel: 45,
@@ -64,18 +58,16 @@ const BinStatus = () => {
   const getFillColor = (level: number, color: string) => {
     if (level >= 80) return "bg-red-500";
     if (level >= 60) {
-      if (color === "green") return "bg-green-500";
       if (color === "yellow") return "bg-yellow-500";
       return "bg-blue-500";
     }
-    if (color === "green") return "bg-green-400";
     if (color === "yellow") return "bg-yellow-400";
     return "bg-blue-400";
   };
 
   return (
-    <div className="max-w-md mx-auto space-y-6">
-      <Card className="p-6 backdrop-blur-sm bg-gradient-to-br from-green-50 to-green-100 border-green-100">
+    <div className="max-w-md mx-auto space-y-6 p-4">
+      <div className="space-y-4">
         <div className="flex items-center gap-3 mb-4">
           <div className="bg-green-100 p-2 rounded-full">
             <ScrollText className="h-5 w-5 text-green-600" />
@@ -98,17 +90,6 @@ const BinStatus = () => {
             ))}
           </div>
         </ScrollArea>
-      </Card>
-
-      <div className="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm border border-gray-100">
-        <div className="flex items-center gap-2">
-          <Battery className="text-green-500" />
-          <span className="text-sm text-green-700">Battery: 82%</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Wifi className="text-green-500" />
-          <span className="text-sm text-green-700">Sensors: Active</span>
-        </div>
       </div>
 
       <h2 className="text-xl font-bold text-green-800 pt-2">Bin Status</h2>
@@ -119,7 +100,6 @@ const BinStatus = () => {
             key={bin.type}
             className={cn(
               "p-4 border-l-4",
-              bin.color === "green" ? "border-l-green-500" : 
               bin.color === "yellow" ? "border-l-yellow-500" : "border-l-blue-500"
             )}
           >
