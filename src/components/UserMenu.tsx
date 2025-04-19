@@ -1,4 +1,3 @@
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,12 +14,11 @@ const UserMenu = () => {
   const { toast } = useToast();
 
   const handleLogout = () => {
-    // TODO: Add actual logout logic when auth is implemented
     toast({
       title: "Logged out successfully",
       description: "You have been logged out of the system",
     });
-    navigate("/");
+    navigate("/login");
   };
 
   return (
