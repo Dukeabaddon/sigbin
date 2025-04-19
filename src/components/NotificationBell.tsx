@@ -11,7 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuGroup,
   DropdownMenuLabel,
-  DropdownMenuFooter,
 } from "@/components/ui/dropdown-menu";
 import { useNotifications, Notification } from "@/contexts/NotificationContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -111,7 +110,7 @@ const NotificationBell = () => {
         </ScrollArea>
         
         <DropdownMenuSeparator />
-        <DropdownMenuFooter className="text-center">
+        <div className="p-2 text-center">
           <Button
             variant="ghost"
             size="sm"
@@ -120,7 +119,7 @@ const NotificationBell = () => {
           >
             View all notifications
           </Button>
-        </DropdownMenuFooter>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
