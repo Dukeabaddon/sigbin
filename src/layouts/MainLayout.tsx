@@ -1,5 +1,6 @@
 
 import NavBar from "@/components/NavBar";
+import UserMenu from "@/components/UserMenu";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -8,7 +9,10 @@ interface MainLayoutProps {
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <main className="pb-20 px-4 pt-4">{children}</main>
+      <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 px-4 py-2 flex justify-end">
+        <UserMenu />
+      </header>
+      <main className="pb-20 px-4 pt-16">{children}</main>
       <NavBar />
     </div>
   );
