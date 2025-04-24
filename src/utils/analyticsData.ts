@@ -1,6 +1,5 @@
 export interface WasteDataPoint {
   day: string;
-  plastic: number;
   metal: number;
   paper: number;
 }
