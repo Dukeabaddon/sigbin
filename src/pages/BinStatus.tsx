@@ -60,7 +60,7 @@ const BinStatus = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 lg:px-8 max-w-6xl space-y-6 py-4">
+    <div className="container mx-auto px-4 lg:px-8 max-w-6xl 2xl:max-w-[1440px] space-y-6 py-4">
       <div className="grid lg:grid-cols-2 gap-8">
         <div className="space-y-4">
           <div className="flex items-center gap-3 mb-4">
@@ -70,7 +70,7 @@ const BinStatus = () => {
             <h2 className="text-xl font-bold text-green-700">Smart Bin User Guide</h2>
           </div>
           
-          <ScrollArea className="h-[calc(100vh-250px)] lg:h-[600px] rounded-md">
+          <ScrollArea className="h-[calc(100vh-250px)] lg:h-[600px] 2xl:h-[700px] rounded-md">
             <div className="space-y-5 pr-4">
               {manualSections.map((section) => (
                 <div key={section.title} className="space-y-2">
