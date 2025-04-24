@@ -59,12 +59,11 @@ const Analytics = () => {
   const getWasteTotals = () => {
     return wasteData.reduce(
       (acc, curr) => {
-        acc.plastic += curr.plastic;
         acc.metal += curr.metal;
         acc.paper += curr.paper;
         return acc;
       },
-      { plastic: 0, metal: 0, paper: 0 }
+      { metal: 0, paper: 0 }
     );
   };
 
@@ -80,12 +79,12 @@ const Analytics = () => {
     };
   };
 
-  const plasticTrend = getTrend(wasteStats.plastic);
   const metalTrend = getTrend(wasteStats.metal);
   const paperTrend = getTrend(wasteStats.paper);
+  const totalTrend = getTrend(wasteStats.metal + wasteStats.paper);
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-8 p-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <h1 className="text-2xl font-bold text-green-800">Waste Analytics</h1>
         
@@ -112,7 +111,6 @@ const Analytics = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="plastic">Plastic</SelectItem>
                 <SelectItem value="metal">Metal</SelectItem>
                 <SelectItem value="paper">Paper</SelectItem>
               </SelectContent>
@@ -121,38 +119,7 @@ const Analytics = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="backdrop-blur-sm bg-white/90 border-green-100">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Plastic Waste</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-between items-end">
-              <div>
-                <p className="text-2xl font-bold">{wasteStats.plastic.toFixed(1)}kg</p>
-                <div className="flex items-center gap-1 mt-1">
-                  {plasticTrend.direction === "up" ? (
-                    <ArrowUp className="h-4 w-4 text-red-500" />
-                  ) : (
-                    <ArrowDown className="h-4 w-4 text-green-500" />
-                  )}
-                  <span 
-                    className={cn(
-                      "text-xs", 
-                      plasticTrend.direction === "up" ? "text-red-600" : "text-green-600"
-                    )}
-                  >
-                    {plasticTrend.percentage}% {plasticTrend.direction === "up" ? "increase" : "decrease"}
-                  </span>
-                </div>
-              </div>
-              <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
-                <div className="h-3 w-3 rounded-full bg-green-500"></div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="backdrop-blur-sm bg-white/90 border-gray-100">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-gray-500">Metal Waste</CardTitle>
@@ -214,17 +181,47 @@ const Analytics = () => {
             </div>
           </CardContent>
         </Card>
+
+        <Card className="backdrop-blur-sm bg-white/90 border-green-100">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-500">Total Recycled</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-between items-end">
+              <div>
+                <p className="text-2xl font-bold">{(wasteStats.paper + wasteStats.metal).toFixed(1)}kg</p>
+                <div className="flex items-center gap-1 mt-1">
+                  {totalTrend.direction === "up" ? (
+                    <ArrowUp className="h-4 w-4 text-red-500" />
+                  ) : (
+                    <ArrowDown className="h-4 w-4 text-green-500" />
+                  )}
+                  <span 
+                    className={cn(
+                      "text-xs", 
+                      totalTrend.direction === "up" ? "text-red-600" : "text-green-600"
+                    )}
+                  >
+                    {totalTrend.percentage}% {totalTrend.direction === "up" ? "increase" : "decrease"}
+                  </span>
+                </div>
+              </div>
+              <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                <div className="h-3 w-3 rounded-full bg-green-500"></div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
-      <Tabs defaultValue="trends" className="w-full space-y-4">
-        <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full">
+      <Tabs defaultValue="trends" className="w-full space-y-8">
+        <TabsList className="grid grid-cols-2 md:grid-cols-3 w-full">
           <TabsTrigger value="trends">Collection Trends</TabsTrigger>
           <TabsTrigger value="distribution">Waste Distribution</TabsTrigger>
-          <TabsTrigger value="diversion">Waste Diversion</TabsTrigger>
-          <TabsTrigger value="location">Waste by Location</TabsTrigger>
+          <TabsTrigger value="diversion">Recycling Rate</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="trends">
+        <TabsContent value="trends" className="space-y-8">
           <Card className="backdrop-blur-sm bg-white/90">
             <CardHeader>
               <CardTitle>Waste Collection Trends</CardTitle>
@@ -240,17 +237,6 @@ const Analytics = () => {
                       formatter={(value: number) => [`${value} kg`, undefined]}
                       labelFormatter={(label) => `Day: ${label}`}
                     />
-                    {(wasteFilterType === "all" || wasteFilterType === "plastic") && (
-                      <Line
-                        type="monotone"
-                        dataKey="plastic"
-                        stroke="#10B981"
-                        name="Plastic"
-                        strokeWidth={2}
-                        dot={{ r: 3 }}
-                        activeDot={{ r: 5 }}
-                      />
-                    )}
                     {(wasteFilterType === "all" || wasteFilterType === "metal") && (
                       <Line
                         type="monotone"
@@ -281,7 +267,7 @@ const Analytics = () => {
           </Card>
         </TabsContent>
         
-        <TabsContent value="distribution">
+        <TabsContent value="distribution" className="space-y-8">
           <Card className="backdrop-blur-sm bg-white/90">
             <CardHeader>
               <CardTitle>Waste Type Distribution</CardTitle>
@@ -313,17 +299,6 @@ const Analytics = () => {
               <div className="space-y-6 w-full md:w-1/2">
                 <div className="space-y-2">
                   <div className="flex items-center">
-                    <div className="w-4 h-4 bg-green-500 rounded mr-2"></div>
-                    <span className="text-sm font-medium">Plastic Waste</span>
-                  </div>
-                  <p className="text-sm text-gray-500">
-                    Plastic waste accounts for the largest percentage of collected waste, 
-                    mostly consisting of bottles and packaging materials.
-                  </p>
-                </div>
-                
-                <div className="space-y-2">
-                  <div className="flex items-center">
                     <div className="w-4 h-4 bg-gray-500 rounded mr-2"></div>
                     <span className="text-sm font-medium">Metal Waste</span>
                   </div>
@@ -348,10 +323,10 @@ const Analytics = () => {
           </Card>
         </TabsContent>
         
-        <TabsContent value="diversion">
+        <TabsContent value="diversion" className="space-y-8">
           <Card className="backdrop-blur-sm bg-white/90">
             <CardHeader>
-              <CardTitle>Waste Diversion Rate</CardTitle>
+              <CardTitle>Recycling Rate</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-[300px]">
@@ -401,54 +376,6 @@ const Analytics = () => {
                   560kg less waste sent to landfills.
                 </p>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="location">
-          <Card className="backdrop-blur-sm bg-white/90">
-            <CardHeader>
-              <CardTitle>Waste by Location</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={wasteGenerationByBin}
-                    margin={{
-                      top: 20,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <RechartsTooltip />
-                    <Legend />
-                    <Bar dataKey="plastic" stackId="a" fill="#10B981" name="Plastic" />
-                    <Bar dataKey="metal" stackId="a" fill="#6B7280" name="Metal" />
-                    <Bar dataKey="paper" stackId="a" fill="#3B82F6" name="Paper" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-              <ScrollArea className="h-[100px] mt-4">
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">North Wing:</span> High plastic waste generation due to cafeteria location.
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">South Wing:</span> Balanced waste profile with office spaces and break rooms.
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">East Wing:</span> Moderate waste generation with balanced material types.
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">West Wing:</span> High plastic waste from product packaging area.
-                  </p>
-                </div>
-              </ScrollArea>
             </CardContent>
           </Card>
         </TabsContent>

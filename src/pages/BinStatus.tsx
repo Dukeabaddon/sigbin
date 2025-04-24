@@ -2,7 +2,7 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ScrollText } from "lucide-react";
+import { ScrollText, Trash2, Signal, Battery, Bell } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
@@ -11,68 +11,62 @@ const BinStatus = () => {
     {
       type: "Metal",
       fillLevel: 45,
-      icon: "🗑️",
+      icon: <Trash2 className="h-6 w-6 text-yellow-500" />,
       color: "yellow"
     },
     {
       type: "Paper",
       fillLevel: 60,
-      icon: "🗑️",
+      icon: <Trash2 className="h-6 w-6 text-blue-500" />,
       color: "blue"
     }
   ];
 
   const manualSections = [
     {
-      title: "Waste Segregation",
-      icon: "♻️",
+      title: "Smart Bin Interface",
+      icon: <Signal className="h-5 w-5 text-green-600" />,
       content:
-        "The S.I.G. Bin uses advanced sensors to automatically detect and sort recyclable materials. Simply place your waste near the sensors, and the system will guide you to the correct bin."
+        "Monitor real-time bin status, fill levels, and system health through our intuitive dashboard interface. Track metal and paper waste collection efficiently."
     },
     {
-      title: "Sanitization",
-      icon: "💧",
+      title: "Bin Monitoring",
+      icon: <Trash2 className="h-5 w-5 text-green-600" />,
       content:
-        "A motion-activated alcohol dispenser is available for touchless hand sanitization. Wave your hand under the dispenser to receive the appropriate amount of sanitizer."
+        "View detailed fill levels for each waste type. The system uses color-coded indicators to show current capacity - green for normal, yellow for moderate, and red for high fill levels."
     },
     {
       title: "System Status",
-      icon: "🔌",
+      icon: <Battery className="h-5 w-5 text-green-600" />,
       content:
-        "Monitor bin fill levels, battery status, and sensor functionality through the dashboard. The system provides real-time updates on all components."
+        "Keep track of the smart bin's operational status, including sensor functionality and system health indicators. Receive real-time updates on any maintenance requirements."
     },
     {
-      title: "Maintenance",
-      icon: "🔋",
+      title: "Notifications",
+      icon: <Bell className="h-5 w-5 text-green-600" />,
       content:
-        "Regular maintenance checks are performed automatically. The system will notify appropriate personnel when bins need to be emptied or when maintenance is required."
-    },
-    {
-      title: "Alerts & Notifications",
-      icon: "🔔",
-      content:
-        "Configure your notification preferences to receive alerts about bin status, maintenance requirements, and system updates through the app."
+        "Stay informed with instant alerts about bin status, maintenance needs, and collection requirements. Customize notification preferences through the settings panel."
     }
   ];
 
   const getFillColor = (level: number, color: string) => {
-    if (level >= 80) return "bg-red-500";
+    if (level >= 80) return "bg-red-400";
     if (level >= 60) {
-      if (color === "yellow") return "bg-yellow-500";
-      return "bg-blue-500";
+      if (color === "yellow") return "bg-yellow-300";
+      return "bg-blue-300";
     }
-    if (color === "yellow") return "bg-yellow-400";
-    return "bg-blue-400";
+    if (color === "yellow") return "bg-yellow-200";
+    return "bg-blue-200";
   };
 
   return (
     <div className="max-w-md mx-auto space-y-6 p-4">
       <div className="space-y-4">
         <div className="flex items-center gap-3 mb-4">
-          <div className="bg-green-100 p-2 rounded-full">
+          <div className="bg-green-50 p-2 rounded-full">
             <ScrollText className="h-5 w-5 text-green-600" />
           </div>
-          <h2 className="text-xl font-bold text-green-800">User Guide</h2>
+          <h2 className="text-xl font-bold text-green-700">How to Use the Web App</h2>
         </div>
         
         <ScrollArea className="h-64 rounded-md">
@@ -80,10 +74,12 @@ const BinStatus = () => {
             {manualSections.map((section) => (
               <div key={section.title} className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">{section.icon}</span>
-                  <h3 className="text-md font-semibold text-green-700">{section.title}</h3>
+                  <div className="bg-green-50 p-1.5 rounded-full">
+                    {section.icon}
+                  </div>
+                  <h3 className="text-md font-semibold text-green-600">{section.title}</h3>
                 </div>
-                <p className="text-sm text-green-900 leading-relaxed pl-7">
+                <p className="text-sm text-green-700 leading-relaxed pl-7">
                   {section.content}
                 </p>
               </div>
@@ -92,7 +88,7 @@ const BinStatus = () => {
         </ScrollArea>
       </div>
 
-      <h2 className="text-xl font-bold text-green-800 pt-2">Bin Status</h2>
+      <h2 className="text-xl font-bold text-green-700 pt-2">Bin Status</h2>
       
       <div className="grid gap-4">
         {bins.map((bin) => (
@@ -100,20 +96,20 @@ const BinStatus = () => {
             key={bin.type}
             className={cn(
               "p-4 border-l-4",
-              bin.color === "yellow" ? "border-l-yellow-500" : "border-l-blue-500"
+              bin.color === "yellow" ? "border-l-yellow-400" : "border-l-blue-400"
             )}
           >
             <div className="flex items-center gap-4 mb-3">
-              <span className="text-2xl">{bin.icon}</span>
-              <h3 className="text-lg font-semibold text-gray-700">{bin.type} Bin</h3>
+              {bin.icon}
+              <h3 className="text-lg font-semibold text-green-700">{bin.type} Bin</h3>
             </div>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Fill Level</span>
+                <span className="text-sm text-green-600">Fill Level</span>
                 <span className={cn(
                   "text-sm font-medium",
-                  bin.fillLevel >= 80 ? "text-red-600" : 
-                  bin.fillLevel >= 60 ? "text-yellow-600" : "text-green-600"
+                  bin.fillLevel >= 80 ? "text-red-500" : 
+                  bin.fillLevel >= 60 ? "text-yellow-500" : "text-green-500"
                 )}>
                   {bin.fillLevel}%
                 </span>
