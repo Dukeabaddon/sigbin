@@ -52,75 +52,77 @@ const BinStatus = () => {
   const getFillColor = (level: number, color: string) => {
     if (level >= 80) return "bg-red-400";
     if (level >= 60) {
-      if (color === "yellow") return "bg-yellow-300";
-      return "bg-blue-300";
+      if (color === "yellow") return "bg-yellow-400";
+      return "bg-blue-400";
     }
-    if (color === "yellow") return "bg-yellow-200";
-    return "bg-blue-200";
+    if (color === "yellow") return "bg-yellow-300";
+    return "bg-blue-300";
   };
 
   return (
-    <div className="max-w-md mx-auto space-y-6 p-4">
-      <div className="space-y-4">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-green-50 p-2 rounded-full">
-            <ScrollText className="h-5 w-5 text-green-600" />
+    <div className="container mx-auto px-4 lg:px-8 max-w-6xl space-y-6 py-4">
+      <div className="grid lg:grid-cols-2 gap-8">
+        <div className="space-y-4">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="bg-green-50 p-2 rounded-full">
+              <ScrollText className="h-5 w-5 text-green-600" />
+            </div>
+            <h2 className="text-xl font-bold text-green-700">How to Use the Web App</h2>
           </div>
-          <h2 className="text-xl font-bold text-green-700">How to Use the Web App</h2>
-        </div>
-        
-        <ScrollArea className="h-64 rounded-md">
-          <div className="space-y-5 pr-4">
-            {manualSections.map((section) => (
-              <div key={section.title} className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="bg-green-50 p-1.5 rounded-full">
-                    {section.icon}
+          
+          <ScrollArea className="h-[calc(100vh-250px)] lg:h-[600px] rounded-md">
+            <div className="space-y-5 pr-4">
+              {manualSections.map((section) => (
+                <div key={section.title} className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="bg-green-50 p-1.5 rounded-full">
+                      {section.icon}
+                    </div>
+                    <h3 className="text-md font-semibold text-green-600">{section.title}</h3>
                   </div>
-                  <h3 className="text-md font-semibold text-green-600">{section.title}</h3>
+                  <p className="text-sm text-green-700 leading-relaxed pl-7">
+                    {section.content}
+                  </p>
                 </div>
-                <p className="text-sm text-green-700 leading-relaxed pl-7">
-                  {section.content}
-                </p>
-              </div>
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
+
+        <div className="space-y-6">
+          <h2 className="text-xl font-bold text-green-700">Bin Status</h2>
+          <div className="grid gap-6">
+            {bins.map((bin) => (
+              <Card 
+                key={bin.type}
+                className={cn(
+                  "p-6 border-l-4",
+                  bin.color === "yellow" ? "border-l-yellow-400" : "border-l-blue-400"
+                )}
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  {bin.icon}
+                  <h3 className="text-lg font-semibold text-green-700">{bin.type} Bin</h3>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-green-600">Fill Level</span>
+                    <span className={cn(
+                      "text-sm font-medium",
+                      bin.color === "yellow" ? "text-yellow-600" : "text-blue-600"
+                    )}>
+                      {bin.fillLevel}%
+                    </span>
+                  </div>
+                  <Progress 
+                    value={bin.fillLevel} 
+                    className={`h-3 ${getFillColor(bin.fillLevel, bin.color)}`}
+                  />
+                </div>
+              </Card>
             ))}
           </div>
-        </ScrollArea>
-      </div>
-
-      <h2 className="text-xl font-bold text-green-700 pt-2">Bin Status</h2>
-      
-      <div className="grid gap-4">
-        {bins.map((bin) => (
-          <Card 
-            key={bin.type}
-            className={cn(
-              "p-4 border-l-4",
-              bin.color === "yellow" ? "border-l-yellow-400" : "border-l-blue-400"
-            )}
-          >
-            <div className="flex items-center gap-4 mb-3">
-              {bin.icon}
-              <h3 className="text-lg font-semibold text-green-700">{bin.type} Bin</h3>
-            </div>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-sm text-green-600">Fill Level</span>
-                <span className={cn(
-                  "text-sm font-medium",
-                  bin.fillLevel >= 80 ? "text-red-500" : 
-                  bin.fillLevel >= 60 ? "text-yellow-500" : "text-green-500"
-                )}>
-                  {bin.fillLevel}%
-                </span>
-              </div>
-              <Progress 
-                value={bin.fillLevel} 
-                className={`h-2.5 ${getFillColor(bin.fillLevel, bin.color)}`}
-              />
-            </div>
-          </Card>
-        ))}
+        </div>
       </div>
     </div>
   );
