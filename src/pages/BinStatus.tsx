@@ -2,7 +2,7 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ScrollText, Trash2, Signal, Battery, Bell } from "lucide-react";
+import { BookOpen, Trash2, Signal, Bell, CircleCheck } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
@@ -37,7 +37,7 @@ const BinStatus = () => {
     },
     {
       title: "System Status",
-      icon: <Battery className="h-5 w-5 text-green-600" />,
+      icon: <CircleCheck className="h-5 w-5 text-green-600" />,
       content:
         "Keep track of the smart bin's operational status, including sensor functionality and system health indicators. Receive real-time updates on any maintenance requirements."
     },
@@ -52,11 +52,11 @@ const BinStatus = () => {
   const getFillColor = (level: number, color: string) => {
     if (level >= 80) return "bg-red-400";
     if (level >= 60) {
-      if (color === "yellow") return "bg-yellow-400";
-      return "bg-blue-400";
+      if (color === "yellow") return "bg-yellow-500";
+      return "bg-blue-600";
     }
-    if (color === "yellow") return "bg-yellow-300";
-    return "bg-blue-300";
+    if (color === "yellow") return "bg-yellow-400";
+    return "bg-blue-500";
   };
 
   return (
@@ -65,9 +65,9 @@ const BinStatus = () => {
         <div className="space-y-4">
           <div className="flex items-center gap-3 mb-4">
             <div className="bg-green-50 p-2 rounded-full">
-              <ScrollText className="h-5 w-5 text-green-600" />
+              <BookOpen className="h-5 w-5 text-green-600" />
             </div>
-            <h2 className="text-xl font-bold text-green-700">How to Use the Web App</h2>
+            <h2 className="text-xl font-bold text-green-700">Smart Bin User Guide</h2>
           </div>
           
           <ScrollArea className="h-[calc(100vh-250px)] lg:h-[600px] rounded-md">
