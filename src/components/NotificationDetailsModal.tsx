@@ -82,13 +82,13 @@ const NotificationDetailsModal: React.FC<NotificationDetailsModalProps> = ({
             </div>
           )}
 
-          {notification.details?.fillLevel !== undefined && (
+          {notification.details?.sensorData?.fillLevel !== undefined && (
             <>
               <Separator />
               <div className="space-y-1">
                 <p className="text-sm text-muted-foreground">Fill Level</p>
                 <p className="text-sm font-medium">
-                  {notification.details.fillLevel}%
+                  {notification.details.sensorData.fillLevel}%
                 </p>
               </div>
             </>
