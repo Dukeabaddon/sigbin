@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,16 +21,27 @@ const NotificationBell = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleViewAll = () => {
+  const handleViewAll = (e: React.MouseEvent) => {
+    e.stopPropagation();
     navigate("/logs");
     setIsOpen(false);
   };
 
-  const handleNotificationClick = (notification: Notification) => {
+  const handleNotificationClick = (notification: Notification, e: React.MouseEvent) => {
+    e.stopPropagation();
     markAsRead(notification.id);
     // The actual modal will be shown from the SystemLogs page
     navigate(`/logs?notificationId=${notification.id}`);
     setIsOpen(false);
+  };
+
+  const handleTriggerClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
+  const handleMarkAllRead = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    markAllAsRead();
   };
 
   // Group notifications by date
@@ -44,7 +54,7 @@ const NotificationBell = () => {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
+        <Button variant="ghost" size="icon" className="relative" onClick={handleTriggerClick}>
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
             <Badge
@@ -56,7 +66,7 @@ const NotificationBell = () => {
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-80">
+      <DropdownMenuContent align="end" className="w-80" onClick={(e) => e.stopPropagation()}>
         <DropdownMenuLabel className="flex justify-between items-center">
           <span>Notifications</span>
           {unreadCount > 0 && (
@@ -64,7 +74,7 @@ const NotificationBell = () => {
               variant="ghost"
               size="sm"
               className="h-auto p-0 text-xs text-blue-600 hover:text-blue-800"
-              onClick={markAllAsRead}
+              onClick={handleMarkAllRead}
             >
               Mark all as read
             </Button>
@@ -88,7 +98,7 @@ const NotificationBell = () => {
                       className={`flex items-start gap-3 p-3 cursor-pointer ${
                         !notification.isRead ? "bg-green-50" : ""
                       }`}
-                      onClick={() => handleNotificationClick(notification)}
+                      onClick={(e) => handleNotificationClick(notification, e)}
                     >
                       {getIcon(notification.type)}
                       <div className="flex-1">

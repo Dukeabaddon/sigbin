@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
@@ -55,19 +54,36 @@ const Analytics = () => {
   const paperTrend = getTrend();
   const totalTrend = getTrend();
 
+  const handleTimeRangeChange = (value: string, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setTimeRange(value);
+  };
+
+  const handleWasteTypeChange = (value: string, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setWasteFilterType(value);
+  };
+
+  const handleSelectClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <div className="max-w-4xl mx-auto space-y-8 p-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <h1 className="text-2xl font-bold text-green-800">Waste Analytics</h1>
         
         <div className="flex flex-col sm:flex-row gap-4 sm:items-end w-full sm:w-auto">
-          <div className="space-y-1.5">
+          <div className="space-y-1.5" onClick={handleSelectClick}>
             <Label htmlFor="timeRange">Time Range</Label>
-            <Select value={timeRange} onValueChange={setTimeRange}>
-              <SelectTrigger id="timeRange" className="w-full sm:w-[150px]">
+            <Select 
+              value={timeRange} 
+              onValueChange={(value) => handleTimeRangeChange(value)}
+            >
+              <SelectTrigger id="timeRange" className="w-full sm:w-[150px]" onClick={handleSelectClick}>
                 <SelectValue placeholder="Select period" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent onClick={handleSelectClick}>
                 <SelectItem value="day">Daily</SelectItem>
                 <SelectItem value="week">Weekly</SelectItem>
                 <SelectItem value="month">Monthly</SelectItem>
@@ -75,13 +91,16 @@ const Analytics = () => {
             </Select>
           </div>
           
-          <div className="space-y-1.5">
+          <div className="space-y-1.5" onClick={handleSelectClick}>
             <Label htmlFor="wasteType">Waste Type</Label>
-            <Select value={wasteFilterType} onValueChange={setWasteFilterType}>
-              <SelectTrigger id="wasteType" className="w-full sm:w-[150px]">
+            <Select 
+              value={wasteFilterType} 
+              onValueChange={(value) => handleWasteTypeChange(value)}
+            >
+              <SelectTrigger id="wasteType" className="w-full sm:w-[150px]" onClick={handleSelectClick}>
                 <SelectValue placeholder="Filter by type" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent onClick={handleSelectClick}>
                 <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="metal">Metal</SelectItem>
                 <SelectItem value="paper">Paper</SelectItem>

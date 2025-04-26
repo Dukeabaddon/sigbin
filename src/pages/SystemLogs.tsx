@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -34,6 +33,15 @@ const SystemLogs = () => {
     setModalOpen(true);
   };
 
+  const handleFilterChange = (value: string, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setFilterType(value);
+  };
+
+  const handleSelectClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   const filteredNotifications = filterType === "all" 
     ? notifications 
     : notifications.filter(n => n.type === filterType);
@@ -50,12 +58,15 @@ const SystemLogs = () => {
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-bold text-green-800">System Logs</h1>
-          <div className="w-32">
-            <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger>
+          <div className="w-32" onClick={handleSelectClick}>
+            <Select 
+              value={filterType} 
+              onValueChange={(value) => handleFilterChange(value)}
+            >
+              <SelectTrigger onClick={handleSelectClick}>
                 <SelectValue placeholder="Filter by type" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent onClick={handleSelectClick}>
                 <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="info">Info</SelectItem>
                 <SelectItem value="warning">Warning</SelectItem>
