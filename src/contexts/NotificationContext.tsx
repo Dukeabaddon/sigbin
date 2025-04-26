@@ -41,7 +41,7 @@ export const mockNotifications: Omit<Notification, "id" | "isRead">[] = [
     message: "Plastic bin nearly full",
     timestamp: "10:30 AM",
     date: "Today",
-    binId: "BIN-001",
+    binId: "BIN",
     details: {
       location: "North Wing",
       actionRequired: "Empty bin within 2 hours",
@@ -57,7 +57,7 @@ export const mockNotifications: Omit<Notification, "id" | "isRead">[] = [
     message: "Maintenance check completed",
     timestamp: "9:15 AM",
     date: "Today",
-    binId: "SYS-MAIN",
+    binId: "SYS",
     details: {
       actionTaken: "System diagnostics run successfully",
       sensorData: {
@@ -71,7 +71,7 @@ export const mockNotifications: Omit<Notification, "id" | "isRead">[] = [
     message: "Metal bin emptied",
     timestamp: "8:45 AM",
     date: "Today",
-    binId: "BIN-002",
+    binId: "BIN",
     details: {
       location: "South Wing",
       actionTaken: "Bin emptied and sanitized",
@@ -87,7 +87,7 @@ export const mockNotifications: Omit<Notification, "id" | "isRead">[] = [
     message: "Battery level low",
     timestamp: "4:20 PM",
     date: "Yesterday",
-    binId: "SYS-PWR",
+    binId: "SYS",
     details: {
       actionRequired: "Replace batteries within 24 hours",
       sensorData: {
@@ -97,10 +97,10 @@ export const mockNotifications: Omit<Notification, "id" | "isRead">[] = [
   },
   {
     type: "error",
-    message: "Connection lost to Bin-003",
+    message: "Connection lost to Bin",
     timestamp: "2:30 PM",
     date: "Yesterday",
-    binId: "BIN-003",
+    binId: "BIN",
     details: {
       location: "East Wing",
       actionRequired: "Check network connectivity",
@@ -112,7 +112,7 @@ export const mockNotifications: Omit<Notification, "id" | "isRead">[] = [
     message: "System update available",
     timestamp: "9:00 AM",
     date: "Yesterday",
-    binId: "SYS-UPD",
+    binId: "SYS",
     details: {
       actionRequired: "Schedule update during off-hours"
     }

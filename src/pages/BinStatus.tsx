@@ -2,7 +2,7 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen, Trash2, Signal, Bell, CircleCheck } from "lucide-react";
+import { BookOpen, Trash2, Signal, Bell, CircleCheck, Wrench } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
@@ -12,13 +12,15 @@ const BinStatus = () => {
       type: "Metal",
       fillLevel: 45,
       icon: <Trash2 className="h-6 w-6 text-yellow-500" />,
-      color: "yellow"
+      sensorStatus: "Good",
+      servoStatus: "Needs Maintenance"
     },
     {
       type: "Paper",
       fillLevel: 60,
       icon: <Trash2 className="h-6 w-6 text-blue-500" />,
-      color: "blue"
+      sensorStatus: "Good",
+      servoStatus: "Good"
     }
   ];
 
@@ -46,17 +48,19 @@ const BinStatus = () => {
       icon: <Bell className="h-5 w-5 text-green-600" />,
       content:
         "Stay informed with instant alerts about bin status, maintenance needs, and collection requirements. Customize notification preferences through the settings panel."
+    },
+    {
+      title: "Maintenance",
+      icon: <Wrench className="h-5 w-5 text-green-600" />,
+      content:
+        "To ensure proper functioning, periodically check and clean the bin's sensors and servomotors. Recommended maintenance is every 2 months or after heavy usage."
     }
   ];
 
-  const getFillColor = (level: number, color: string) => {
-    if (level >= 80) return "bg-red-400";
-    if (level >= 60) {
-      if (color === "yellow") return "bg-yellow-500";
-      return "bg-blue-600";
-    }
-    if (color === "yellow") return "bg-yellow-400";
-    return "bg-blue-500";
+  const getFillOpacity = (level: number) => {
+    if (level >= 80) return "opacity-90";
+    if (level >= 60) return "opacity-60";
+    return "opacity-30";
   };
 
   return (
@@ -97,7 +101,7 @@ const BinStatus = () => {
                 key={bin.type}
                 className={cn(
                   "p-6 border-l-4",
-                  bin.color === "yellow" ? "border-l-yellow-400" : "border-l-blue-400"
+                  bin.type === "Metal" ? "border-l-yellow-400" : "border-l-blue-400"
                 )}
               >
                 <div className="flex items-center gap-4 mb-4">
@@ -107,17 +111,37 @@ const BinStatus = () => {
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-sm text-green-600">Fill Level</span>
-                    <span className={cn(
-                      "text-sm font-medium",
-                      bin.color === "yellow" ? "text-yellow-600" : "text-blue-600"
-                    )}>
+                    <span className="text-sm font-medium text-green-600">
                       {bin.fillLevel}%
                     </span>
                   </div>
                   <Progress 
                     value={bin.fillLevel} 
-                    className={`h-3 ${getFillColor(bin.fillLevel, bin.color)}`}
+                    className={cn(
+                      "h-3 bg-green-100",
+                      getFillOpacity(bin.fillLevel)
+                    )}
                   />
+                  <div className="grid grid-cols-2 gap-4 mt-4">
+                    <div className="space-y-1">
+                      <span className="text-sm text-green-600">Sensor Status</span>
+                      <div className={cn(
+                        "text-sm font-medium",
+                        bin.sensorStatus === "Good" ? "text-green-600" : "text-amber-600"
+                      )}>
+                        {bin.sensorStatus}
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-sm text-green-600">Servo Motor Status</span>
+                      <div className={cn(
+                        "text-sm font-medium",
+                        bin.servoStatus === "Good" ? "text-green-600" : "text-amber-600"
+                      )}>
+                        {bin.servoStatus}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </Card>
             ))}
