@@ -1,26 +1,33 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen, Trash2, Signal, Bell, CircleCheck, Wrench } from "lucide-react";
+import { BookOpen, Trash2, Signal, Bell, CircleCheck, Wrench, Battery, MapPin } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
 const BinStatus = () => {
+  const [location, setLocation] = useState("");
+  
   const bins = [
     {
       type: "Metal",
       fillLevel: 45,
       icon: <Trash2 className="h-6 w-6 text-yellow-500" />,
+      color: "yellow",
       sensorStatus: "Good",
-      servoStatus: "Needs Maintenance"
+      servoStatus: "Needs Maintenance",
+      batteryLevel: 85
     },
     {
       type: "Paper",
       fillLevel: 60,
       icon: <Trash2 className="h-6 w-6 text-blue-500" />,
+      color: "blue",
       sensorStatus: "Good",
-      servoStatus: "Good"
+      servoStatus: "Good",
+      batteryLevel: 92
     }
   ];
 
@@ -65,8 +72,9 @@ const BinStatus = () => {
 
   return (
     <div className="container mx-auto px-4 lg:px-8 max-w-6xl 2xl:max-w-[1440px] space-y-6 py-4">
-      <div className="grid lg:grid-cols-2 gap-8">
-        <div className="space-y-4">
+      <div className="flex flex-col items-center gap-8">
+        {/* Smart Bin User Guide Section */}
+        <div className="w-full">
           <div className="flex items-center gap-3 mb-4">
             <div className="bg-green-50 p-2 rounded-full">
               <BookOpen className="h-5 w-5 text-green-600" />
@@ -74,7 +82,7 @@ const BinStatus = () => {
             <h2 className="text-xl font-bold text-green-700">Smart Bin User Guide</h2>
           </div>
           
-          <ScrollArea className="h-[calc(100vh-250px)] lg:h-[600px] 2xl:h-[700px] rounded-md">
+          <ScrollArea className="h-[400px] rounded-md">
             <div className="space-y-5 pr-4">
               {manualSections.map((section) => (
                 <div key={section.title} className="space-y-2">
@@ -93,7 +101,8 @@ const BinStatus = () => {
           </ScrollArea>
         </div>
 
-        <div className="space-y-6">
+        {/* Bin Status Section */}
+        <div className="w-full space-y-6">
           <h2 className="text-xl font-bold text-green-700">Bin Status</h2>
           <div className="grid gap-6">
             {bins.map((bin) => (
@@ -101,7 +110,9 @@ const BinStatus = () => {
                 key={bin.type}
                 className={cn(
                   "p-6 border-l-4",
-                  bin.type === "Metal" ? "border-l-yellow-400" : "border-l-blue-400"
+                  bin.type === "Metal" 
+                    ? "border-l-yellow-400 bg-yellow-50/30" 
+                    : "border-l-blue-400 bg-blue-50/30"
                 )}
               >
                 <div className="flex items-center gap-4 mb-4">
@@ -118,34 +129,68 @@ const BinStatus = () => {
                   <Progress 
                     value={bin.fillLevel} 
                     className={cn(
-                      "h-3 bg-green-100",
+                      "h-3",
+                      bin.type === "Metal" ? "bg-yellow-100" : "bg-blue-100",
                       getFillOpacity(bin.fillLevel)
                     )}
                   />
-                  <div className="grid grid-cols-2 gap-4 mt-4">
-                    <div className="space-y-1">
-                      <span className="text-sm text-green-600">Sensor Status</span>
-                      <div className={cn(
-                        "text-sm font-medium",
-                        bin.sensorStatus === "Good" ? "text-green-600" : "text-amber-600"
-                      )}>
-                        {bin.sensorStatus}
-                      </div>
-                    </div>
-                    <div className="space-y-1">
-                      <span className="text-sm text-green-600">Servo Motor Status</span>
-                      <div className={cn(
-                        "text-sm font-medium",
-                        bin.servoStatus === "Good" ? "text-green-600" : "text-amber-600"
-                      )}>
-                        {bin.servoStatus}
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </Card>
             ))}
           </div>
+
+          {/* System Status Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <Card className="p-4 bg-green-50/30">
+              <div className="flex items-center gap-2 mb-2">
+                <Signal className="h-4 w-4 text-green-600" />
+                <h4 className="text-sm font-semibold text-green-700">Sensor Status</h4>
+              </div>
+              <p className={cn(
+                "text-sm font-medium",
+                bins[0].sensorStatus === "Good" ? "text-green-600" : "text-amber-600"
+              )}>
+                {bins[0].sensorStatus}
+              </p>
+            </Card>
+
+            <Card className="p-4 bg-green-50/30">
+              <div className="flex items-center gap-2 mb-2">
+                <Wrench className="h-4 w-4 text-green-600" />
+                <h4 className="text-sm font-semibold text-green-700">Servo Motor Status</h4>
+              </div>
+              <p className={cn(
+                "text-sm font-medium",
+                bins[0].servoStatus === "Good" ? "text-green-600" : "text-amber-600"
+              )}>
+                {bins[0].servoStatus}
+              </p>
+            </Card>
+
+            <Card className="p-4 bg-green-50/30">
+              <div className="flex items-center gap-2 mb-2">
+                <Battery className="h-4 w-4 text-green-600" />
+                <h4 className="text-sm font-semibold text-green-700">Battery Level</h4>
+              </div>
+              <p className="text-sm font-medium text-green-600">
+                {bins[0].batteryLevel}%
+              </p>
+            </Card>
+          </div>
+
+          {/* Location Input */}
+          <Card className="p-4 bg-white/50">
+            <div className="flex items-center gap-2 mb-2">
+              <MapPin className="h-4 w-4 text-green-600" />
+              <h4 className="text-sm font-semibold text-green-700">Bin Location</h4>
+            </div>
+            <Input
+              placeholder="Enter bin location (e.g., North Wing)"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="bg-white"
+            />
+          </Card>
         </div>
       </div>
     </div>

@@ -10,11 +10,12 @@ const Settings = () => {
   const [settings, setSettings] = useState({
     pushNotifications: true,
     smsAlerts: false,
-    fillThreshold: 75, // Default threshold
+    fillThreshold: 75,
+    batteryThreshold: 20, // New battery threshold setting
   });
 
-  const handleSliderChange = (value: number[]) => {
-    setSettings(prev => ({ ...prev, fillThreshold: value[0] }));
+  const handleSliderChange = (key: 'fillThreshold' | 'batteryThreshold') => (value: number[]) => {
+    setSettings(prev => ({ ...prev, [key]: value[0] }));
   };
 
   return (
@@ -50,6 +51,7 @@ const Settings = () => {
               }
             />
           </div>
+          
           <div className="space-y-4">
             <div className="space-y-1">
               <Label>Fill Level Alert Threshold</Label>
@@ -60,7 +62,7 @@ const Settings = () => {
             <div className="space-y-2">
               <Slider
                 value={[settings.fillThreshold]}
-                onValueChange={handleSliderChange}
+                onValueChange={handleSliderChange('fillThreshold')}
                 min={50}
                 max={95}
                 step={5}
@@ -73,6 +75,31 @@ const Settings = () => {
               </div>
             </div>
           </div>
+
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <Label>Battery Level Alert Threshold</Label>
+              <p className="text-sm text-gray-500">
+                Set the battery level percentage at which you want to receive low battery alerts
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Slider
+                value={[settings.batteryThreshold]}
+                onValueChange={handleSliderChange('batteryThreshold')}
+                min={10}
+                max={30}
+                step={5}
+                className="w-full"
+              />
+              <div className="flex justify-between text-sm text-gray-500">
+                <span>10%</span>
+                <span>{settings.batteryThreshold}%</span>
+                <span>30%</span>
+              </div>
+            </div>
+          </div>
+
           <Button className="w-full mt-6">Save Preferences</Button>
         </div>
       </Card>
