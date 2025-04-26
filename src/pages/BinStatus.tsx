@@ -1,15 +1,11 @@
-
-import React, { useState } from "react";
+import React from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen, Trash2, Signal, Bell, CircleCheck, Wrench, Battery, MapPin } from "lucide-react";
+import { BookOpen, Trash2, Signal, Bell, CircleCheck, Wrench, Battery } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
 
 const BinStatus = () => {
-  const [location, setLocation] = useState("");
-  
   const bins = [
     {
       type: "Metal",
@@ -130,7 +126,12 @@ const BinStatus = () => {
                     value={bin.fillLevel} 
                     className={cn(
                       "h-3",
-                      bin.type === "Metal" ? "bg-yellow-100" : "bg-blue-100",
+                      bin.type === "Metal" 
+                        ? "bg-yellow-100" : "bg-blue-100"
+                    )}
+                    indicatorClassName={cn(
+                      bin.type === "Metal" 
+                        ? "bg-yellow-500" : "bg-blue-500",
                       getFillOpacity(bin.fillLevel)
                     )}
                   />
@@ -177,20 +178,6 @@ const BinStatus = () => {
               </p>
             </Card>
           </div>
-
-          {/* Location Input */}
-          <Card className="p-4 bg-white/50">
-            <div className="flex items-center gap-2 mb-2">
-              <MapPin className="h-4 w-4 text-green-600" />
-              <h4 className="text-sm font-semibold text-green-700">Bin Location</h4>
-            </div>
-            <Input
-              placeholder="Enter bin location (e.g., North Wing)"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="bg-white"
-            />
-          </Card>
         </div>
       </div>
     </div>

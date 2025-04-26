@@ -11,7 +11,7 @@ const Settings = () => {
     pushNotifications: true,
     smsAlerts: false,
     fillThreshold: 75,
-    batteryThreshold: 20, // New battery threshold setting
+    batteryThreshold: 20,
   });
 
   const handleSliderChange = (key: 'fillThreshold' | 'batteryThreshold') => (value: number[]) => {
@@ -37,6 +37,7 @@ const Settings = () => {
               }
             />
           </div>
+
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <Label>SMS Alerts</Label>
